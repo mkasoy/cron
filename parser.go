@@ -240,6 +240,7 @@ func getField(field string, r bounds) (uint64, error) {
 		if expr == "L" {
 			ldBit := uint64(1) << 33 //33rd bit represents last day of month
 			bits |= ldBit
+			continue
 		}
 		bit, err := getRange(expr, r)
 		if err != nil {
