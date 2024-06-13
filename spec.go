@@ -1,6 +1,9 @@
 package cron
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 // SpecSchedule specifies a duty cycle (to the second granularity), based on a
 // traditional crontab specification. It is computed initially and stored as bit sets.
@@ -181,6 +184,16 @@ func dayMatches(s *SpecSchedule, t time.Time) bool {
 		domMatch bool = 1<<uint(t.Day())&s.Dom > 0
 		dowMatch bool = 1<<uint(t.Weekday())&s.Dow > 0
 	)
+	if !domMatch && (s.Dom&(uint64(1)<<33) > 0) {
+		fmt.Printf("judge last day of month, dom: %d", s.Dom)
+		firstDayNextMonth := time.Date(t.Year(), t.Month()+1, 1, 0, 0, 0, 0, t.Location())
+		lastday := firstDayNextMonth.AddDate(0, 0, -1).Day()
+		fmt.Printf("last day of month: %d", lastday)
+		if lastday == t.Day() {
+			domMatch = true
+		}
+	}
+
 	if s.Dom&starBit > 0 || s.Dow&starBit > 0 {
 		return domMatch && dowMatch
 	}
