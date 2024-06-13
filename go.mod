@@ -1,3 +1,3 @@
-module github.com/mkasoy/cron/mkasoy
+module github.com/mkasoy/cron
 
 go 1.12
