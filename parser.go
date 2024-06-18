@@ -151,6 +151,14 @@ func (p Parser) Parse(spec string) (Schedule, error) {
 	}, nil
 }
 
+func (p Parser) ParseDelay(spec string, delay uint64) (Schedule, error) {
+	specsch, _ := p.Parse(spec)
+	return &SpecDelaySchedule{
+		SpecSchedule: specsch.(*SpecSchedule),
+		Delay:        delay,
+	}, nil
+}
+
 // normalizeFields takes a subset set of the time fields and returns the full set
 // with defaults (zeroes) populated for unset fields.
 //
